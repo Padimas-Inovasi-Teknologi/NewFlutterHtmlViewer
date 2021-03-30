@@ -10,16 +10,16 @@ import 'flutter_html_text.dart';
 import 'flutter_html_video.dart';
 
 class HtmlParser {
-  TextOverflow overflow;
-  int maxLines;
-  String baseUrl;
-  Function onLaunchFail;
+  TextOverflow? overflow;
+  int? maxLines;
+  String? baseUrl;
+  Function? onLaunchFail;
 
   HtmlParser({this.baseUrl, this.onLaunchFail, this.overflow, this.maxLines});
 
   _parseChildren(dom.Element e, widgetList) {
     if (e.localName == "img" && e.attributes.containsKey('src')) {
-      var src = e.attributes['src'];
+      var src = e.attributes['src']!;
 
       if (src.startsWith("http") || src.startsWith("https")) {
         widgetList.add(new CachedNetworkImage(
@@ -31,9 +31,9 @@ class HtmlParser {
         var base64Str = src.replaceAll(exp, '');
         var bytes = base64.decode(base64Str);
         widgetList.add(new Image.memory(bytes, fit: BoxFit.cover));
-      } else if (baseUrl != null && baseUrl.isNotEmpty && src.startsWith("/")) {
+      } else if (baseUrl != null && baseUrl!.isNotEmpty && src.startsWith("/")) {
         widgetList.add(new CachedNetworkImage(
-          imageUrl: baseUrl + src,
+          imageUrl: baseUrl! + src,
           fit: BoxFit.cover,
         ));
       }
@@ -44,7 +44,7 @@ class HtmlParser {
         widgetList.add(
           new NetworkPlayerLifeCycle(
             src,
-            (BuildContext context, VideoPlayerController controller) =>
+            (BuildContext context, VideoPlayerController? controller) =>
                 new AspectRatioVideo(controller),
           ),
         );
@@ -57,7 +57,7 @@ class HtmlParser {
                 widgetList.add(
                   new NetworkPlayerLifeCycle(
                     src,
-                    (BuildContext context, VideoPlayerController controller) =>
+                    (BuildContext context, VideoPlayerController? controller) =>
                         new AspectRatioVideo(controller),
                   ),
                 );
@@ -77,11 +77,11 @@ class HtmlParser {
   }
 
   List<Widget> parseHTML(String html) {
-    List<Widget> widgetList = new List();
+    List<Widget> widgetList = [];
 
     dom.Document document = parse(html);
 
-    dom.Element docBody = document.body;
+    dom.Element docBody = document.body!;
 
     List<dom.Element> styleElements = docBody.getElementsByTagName("style");
     List<dom.Element> scriptElements = docBody.getElementsByTagName("script");
