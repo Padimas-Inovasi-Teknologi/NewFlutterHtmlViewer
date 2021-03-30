@@ -1,0 +1,39 @@
+group 'com.bleuxstrife.new_flutter_html_viewer'
+version '1.0'
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.1.0'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion 16
+    }
+
+    dependencies {
+        api 'com.github.droibit.customtabslauncher:launcher:1.5.0'
+    }
+}
+
+dependencies {
+    implementation 'androidx.browser:browser:1.2.0'
+}
